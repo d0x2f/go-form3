@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+  accountapi-client:
+    image: golang:1.19.5
+    volumes:
+      - .:/build
+    working_dir: /build
+    depends_on:
+      accountapi:
+        condition: service_healthy
+    command: [
+      "/usr/local/go/bin/go",
+      "test",
+      "./accountsv1",
+      "-v",
+      "-timeout",
+      "1s"
+    ]
+
+  accountapi:
+    image: form3tech/interview-accountapi:v1.0.0-46-gb3b6c766
+    restart: on-failure
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      vault:
+        condition: service_started
+    healthcheck:
+      test: [
+        "CMD",
+        "wget",
+        "--no-verbose",
+        "--tries=1",
+        "--spider",
+        "http://localhost:8080/v1/organisation/accounts"
+      ]
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    environment:
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN=8fb95528-57c6-422e-9722-d2147bcba8ed
+      - PSQL_USER=root
+      - PSQL_PASSWORD=password
+      - PSQL_HOST=postgresql
+      - PSQL_PORT=5432
+      - STACK_NAME=f3-interview-accountapi
+      - DATABASE-HOST=postgresql
+      - DATABASE-SSL-MODE=disable
+      - DATABASE-USERNAME=interview_accountapi_user
+      - DATABASE-PASSWORD=123
+    ports:
+      - 8080:8080
+
+  postgresql:
+    image: postgres:9.5-alpine
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./scripts/db:/docker-entrypoint-initdb.d/
+
+  vault:
+    image: vault:1.6.3
+    environment:
+      - SKIP_SETCAP=1
+      - VAULT_DEV_ROOT_TOKEN_ID=8fb95528-57c6-422e-9722-d2147bcba8ed
