@@ -33,7 +33,7 @@ import (
 ## Exports
 
 This library exports a `Client` struct with three methods to manage Form3
-accounts, `Create`, `Delete` & `Get` with the following signatures:
+accounts, `Create`, `Delete` & `Fetch` with the following signatures:
 
 ```go
 type Client struct {
@@ -62,7 +62,7 @@ client.Delete(
 ) error // An error object if one occurred
 
 // Fetches an account with the given id
-client.Get(
+client.Fetch(
 	ctx context.Context,
 	accountUuid string
 ) (
@@ -110,7 +110,7 @@ func main() {
 	}
 
 	// Fetch
-	account, err := c.Get(ctx, "654a4fe5-766f-452c-b7e3-8c7c5030668b")
+	account, err := c.Fetch(ctx, "654a4fe5-766f-452c-b7e3-8c7c5030668b")
 	if (err != nil) {
 		// handle error
 	}

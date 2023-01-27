@@ -78,7 +78,7 @@ func mockDeleteHandler(rw http.ResponseWriter, req *http.Request) bool {
 }
 
 // Mock of GET /<uuid>
-func mockGetAccountHandler(rw http.ResponseWriter, req *http.Request) bool {
+func mockGetHandler(rw http.ResponseWriter, req *http.Request) bool {
 	if req.Method != "GET" {
 		return false
 	}
@@ -113,7 +113,7 @@ func mockApiHandler(rw http.ResponseWriter, req *http.Request) {
 	handlers := []func(http.ResponseWriter, *http.Request) bool{
 		mockPostHandler,
 		mockDeleteHandler,
-		mockGetAccountHandler,
+		mockGetHandler,
 	}
 
 	handled := false

@@ -37,7 +37,7 @@ func testDelete(t *testing.T, c Client, testCase TestCase) {
 	err = c.Delete(ctx, accountId, *account.Version)
 	assert.NoError(t, err)
 
-	_, err = c.Get(ctx, accountId)
+	_, err = c.Fetch(ctx, accountId)
 	assert.Equal(
 		t,
 		fmt.Sprintf("404 Not Found - record %s does not exist", accountId),
@@ -46,7 +46,7 @@ func testDelete(t *testing.T, c Client, testCase TestCase) {
 }
 
 // Test fetching an account
-func testGet(t *testing.T, c Client, testCase TestCase) {
+func testFetch(t *testing.T, c Client, testCase TestCase) {
 	ctx := context.Background()
 	accountId := testCase.InputAccount.ID
 
@@ -54,7 +54,7 @@ func testGet(t *testing.T, c Client, testCase TestCase) {
 	assert.NoError(t, err)
 
 	// Fetch the account
-	got, err := c.Get(ctx, accountId)
+	got, err := c.Fetch(ctx, accountId)
 	assert.NoError(t, err)
 	assert.Equal(t, testCase.ExpectedAccount, got)
 
@@ -99,10 +99,10 @@ func testCreateError(t *testing.T, c Client) {
 	})
 }
 
-func testGetError(t *testing.T, c Client) {
-	t.Run("GetError", func(t *testing.T) {
+func testFetchError(t *testing.T, c Client) {
+	t.Run("FetchError", func(t *testing.T) {
 		ctx := context.Background()
-		_, err := c.Get(ctx, "00000000-0000-0000-0000-deadbeefcafe")
+		_, err := c.Fetch(ctx, "00000000-0000-0000-0000-deadbeefcafe")
 		assert.EqualError(
 			t,
 			err,
@@ -142,7 +142,7 @@ func testAgainstUrl(t *testing.T, apiUrl string) {
 	}{
 		{name: "New", test: testCreate},
 		{name: "Delete", test: testDelete},
-		{name: "Get", test: testGet},
+		{name: "Fetch", test: testFetch},
 	}
 
 	// For each fixture, run each test
@@ -157,7 +157,7 @@ func testAgainstUrl(t *testing.T, apiUrl string) {
 
 	// Extra tests
 	testCreateError(t, c)
-	testGetError(t, c)
+	testFetchError(t, c)
 	testDeleteError(t, c)
 }
 

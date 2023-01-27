@@ -141,7 +141,7 @@ func (c *Client) Delete(ctx context.Context, accountUuid string, version int64) 
 }
 
 // Fetch an account
-func (c *Client) Get(ctx context.Context, accountUuid string) (*AccountData, error) {
+func (c *Client) Fetch(ctx context.Context, accountUuid string) (*AccountData, error) {
 	req, err := http.NewRequest(
 		"GET",
 		fmt.Sprintf(
