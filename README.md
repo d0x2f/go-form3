@@ -4,10 +4,36 @@ Me: Dylan McGannon
 
 A Form3 accounts API client library for go.
 
+## Importing
+
+Install in your project using:
+
+```bash
+$ go get github.com/d0x2f/go-form3
+```
+
+This repo is structured to accommodate implementations of other apis under the
+Form3 namespace including future versions of the accounts api.
+
+Thus the accountsv1 code lives in the accountsv1 directory and can be imported
+with:
+```go
+import (
+	"github.com/d0x2f/go-form3/accountsv1"
+)
+```
+
+## Features
+
+ - You can provide your own http.Client to configure requests how you wish.
+ - Methods accept a context parameter to enable cancellable requests.
+ - API generated errors include the raw HTTP response to allow you to perform
+ deeper inspection.
+
 ## Exports
 
-This library exports a `Client` struct with three methods to manage Form3 accounts, `Create`,
-`Delete` & `Get` with the following signatures:
+This library exports a `Client` struct with three methods to manage Form3
+accounts, `Create`, `Delete` & `Get` with the following signatures:
 
 ```go
 type Client struct {
@@ -97,27 +123,23 @@ func main() {
 }
 ```
 
-## Features
-
- - You can provide your own http.Client to configure requests how you wish.
- - Methods accept a context parameter to enable cancellable requests.
- - API generated errors include the raw HTTP response to allow you to perform deeper inspection.
-
-
 ## Testing
 
 All tests can be run against a mocked api or against a running api service.
-By default tests are run against both and are configured to run using the provided docker-compose.yml.
+By default tests are run against both and are configured to run using the
+provided docker-compose.yml.
+
 Running the integration tests can be disabled using the --offline flag like so:
 
 ```bash
-$ go test --offline
+$ go test ./accountsv1 --offline
 ```
 
-You can also configure the API URL for integration tests to run against using the --base-url flag:
+You can also configure the API base URL for integration tests to run against using
+the --base-url flag:
 
 ```bash
-$ go test --base-url http://localhost:8080
+$ go test ./accountsv1 --base-url http://localhost:8080
 ```
 
 Tests run automatically using a GitHub workflow.
