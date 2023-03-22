@@ -1,6 +1,8 @@
-# Form3 Accounts Client Library
+## :warning: This is a take-home task as part of a job application, **not a real library**
 
-Me: Dylan McGannon
+---
+
+# Form3 Accounts Client Library
 
 A Form3 accounts API client library for go.
 
@@ -17,6 +19,7 @@ Form3 namespace including future versions of the accounts api.
 
 Thus the accountsv1 code lives in the accountsv1 directory and can be imported
 with:
+
 ```go
 import (
 	"github.com/d0x2f/go-form3/accountsv1"
@@ -25,10 +28,10 @@ import (
 
 ## Features
 
- - You can provide your own http.Client to configure requests how you wish.
- - Methods accept a context parameter to enable cancellable requests.
- - API generated errors include the raw HTTP response to allow you to perform
- deeper inspection.
+- You can provide your own http.Client to configure requests how you wish.
+- Methods accept a context parameter to enable cancellable requests.
+- API generated errors include the raw HTTP response to allow you to perform
+  deeper inspection.
 
 ## Exports
 
@@ -42,6 +45,7 @@ type Client struct {
 	EndPoint   string      // The accounts endpoint
 }
 ```
+
 Sensible defaults will be used when no values are given.
 
 ```go
